@@ -12,7 +12,7 @@ const RecommendedGroup = () => {
         <p style={{ fontWeight: "400", fontSize: "14px", lineHeight: "18px" }}>
           <img
             src={profile1}
-            style={{ marginRight:'12px', width: "36px", height: "36px" }}
+            style={{ marginRight: "12px", width: "36px", height: "36px" }}
             alt=""
           />
           Leisure
@@ -21,20 +21,21 @@ const RecommendedGroup = () => {
           style={{
             padding: "4px 12px",
             borderRadius: "14px",
-            background: "#EDEEF0",
+            background: "#000000",
+            color: "#fff",
           }}
           className="btn">
-          Follow
+          Followed
         </p>
       </div>
       <div className="d-flex justify-content-between align-items-center">
         <p style={{ fontWeight: "400", fontSize: "14px", lineHeight: "18px" }}>
           <img
             src={profile2}
-            style={{ marginRight:'12px', width: "36px", height: "36px" }}
+            style={{ marginRight: "12px", width: "36px", height: "36px" }}
             alt=""
           />
-         Activism
+          Activism
         </p>
         <p
           style={{
@@ -50,10 +51,10 @@ const RecommendedGroup = () => {
         <p style={{ fontWeight: "400", fontSize: "14px", lineHeight: "18px" }}>
           <img
             src={profile3}
-            style={{ marginRight:'12px', width: "36px", height: "36px" }}
+            style={{ marginRight: "12px", width: "36px", height: "36px" }}
             alt=""
           />
-         MBA
+          MBA
         </p>
         <p
           style={{
@@ -69,7 +70,7 @@ const RecommendedGroup = () => {
         <p style={{ fontWeight: "400", fontSize: "14px", lineHeight: "18px" }}>
           <img
             src={profile1}
-            style={{ marginRight:'12px', width: "36px", height: "36px" }}
+            style={{ marginRight: "12px", width: "36px", height: "36px" }}
             alt=""
           />
           Philosophy
@@ -84,6 +85,17 @@ const RecommendedGroup = () => {
           Follow
         </p>
       </div>
+      <p
+        style={{
+          fontWeight: "400",
+          fontSize: "12px",
+          lineHeight: "16px",
+          textAlign: "right",
+          color: "#2F6CE5",
+          marginTop: "54px",
+        }}>
+        See More...
+      </p>
     </section>
   );
 };

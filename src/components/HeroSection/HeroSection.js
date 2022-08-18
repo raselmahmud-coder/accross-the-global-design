@@ -18,16 +18,18 @@ import article from "../../assets/article.png";
 import education from "../../assets/education-icon.png";
 import meetup from "../../assets/meetup.png";
 import job from "../../assets/job-icon.png";
+import arrowLeft from "../../assets/arrow_back.png";
+import androidPostIcon from "../../assets/androidPen.png";
 import alertIcon from "../../assets/alert-icon.png";
+import mobileCover from "../../assets/mobile-cover-min.png";
 import ArticlePosts from "../Posts/ArticlePosts";
 import JobPosts from "../Posts/JobPosts";
 import { useState } from "react";
 import RecommendedGroup from "../RecommendedGroup/RecommendedGroup";
-
+import customSpace from "./hero.module.css";
 const HeroSection = () => {
   const [userLogIn, setUserLogIn] = useState(true);
   const customStyles = {
-    customSpace: { paddingTop: "250px", paddingLeft: "150px" },
     fontDesign: {
       fontSize: "15px",
       fontWeight: "500",
@@ -37,8 +39,8 @@ const HeroSection = () => {
       padding: "0px 64px",
     },
     customBtn: {
-      color:'#6A6A6B'
-    }
+      color: "#6A6A6B",
+    },
   };
 
   return (
@@ -46,24 +48,43 @@ const HeroSection = () => {
       <section
         className="img-fluid text-white"
         style={{
-          backgroundImage:
-            "url(" +
-            "https://raw.githubusercontent.com/raselmahmud22/fakeData/main/coverimg.png" +
-            ")",
-          backgroundPosition: "center",
-          backgroundSize: "cover",
-          backgroundRepeat: "no-repeat",
-          height: "440px",
+          height: "340px",
         }}>
-        <div style={customStyles.customSpace}>
+        <img
+          src={
+            "https://raw.githubusercontent.com/raselmahmud22/fakeData/main/coverimg.png"
+          }
+          className="d-lg-block d-none img-fluid"
+          alt=""
+        />
+        <img
+          src={mobileCover}
+          className="img-fluid d-lg-none d-block position-absolute "
+          style={{ width: "100%" }}
+          alt=""
+        />
+        <div
+          className="position-relative px-4 d-lg-none d-flex justify-content-between"
+          style={{ top: "20px" }}>
+          <img
+            src={arrowLeft}
+            style={{ width: "24px", height: "24px" }}
+            alt=""
+          />
+          <button className="btn btn-outline-light">
+            {userLogIn ? "Leave Group" : "Join Group"}
+          </button>
+        </div>
+        <div
+          className={`${customSpace.customSpace} position-relative text-white ps-5 ps-md-0 ps-lg-0`}>
           <h2>Computer Engineering</h2>
           <p>142,765 Computer Engineers follow this</p>
         </div>
       </section>
 
-      <section className="container" style={customStyles.customPadding}>
+      <section className="container-lg container-sm px-lg-5">
         <div className="row" style={{ marginTop: "47px" }}>
-          <div className="col-md-8">
+          <div className="col-md-8 d-none d-lg-block">
             <Nav
               activeKey="/"
               onSelect={(selectedKey) => alert(`selected ${selectedKey}`)}>
@@ -86,23 +107,35 @@ const HeroSection = () => {
               </Nav.Item>
             </Nav>
           </div>
-          <div className="col-md-4 d-flex justify-content-end">
+          <div className="d-lg-none d-md-none d-flex justify-content-between align-items-center mb-3">
+            <h6>Posts(368)</h6>
+            <button className="btn btn-light">Filter: All</button>
+          </div>
+          <div className="col-md-4 d-flex justify-content-end d-none d-lg-block">
             <button
               className="btn btn-light me-2"
               style={customStyles.fontDesign}>
               Write a post
               <img src={arrow} alt="" />
             </button>
-            <button className={`btn ${userLogIn ? "btn-outline-dark" : 'btn-primary'}`} style={customStyles.fontDesign}>
-              <img src={userLogIn ? arrowRight : group} className="me-2" alt="" />
+            <button
+              className={`btn ${
+                userLogIn ? "btn-outline-dark" : "btn-primary"
+              }`}
+              style={customStyles.fontDesign}>
+              <img
+                src={userLogIn ? arrowRight : group}
+                className="me-2"
+                alt=""
+              />
               {userLogIn ? "Leave Group" : "Join Group"}
             </button>
           </div>
         </div>
-        <hr className=" mb-4" />
+        <hr className="d-none d-lg-block mb-4" />
 
         <div className="row">
-          <div className="col-md-8 pe-5">
+          <div className="col-md-8 pe-lg-5">
             <ArticlePosts
               coverImg={cover1}
               categoryImg={article}
@@ -131,37 +164,29 @@ const HeroSection = () => {
             <JobPosts
               coverImg={cover3}
               categoryImg={meetup}
-              title={
-                "Finance & Investment Elite Social Mixer @Lujiazui"
-              }
-              date={
-                'Fri, 12 Oct, 2018'
-              }
+              title={"Finance & Investment Elite Social Mixer @Lujiazui"}
+              date={"Fri, 12 Oct, 2018"}
               icon={calenderIcon}
-              location={'Ahmedabad, India'}
-              button={'Visit Website'}
+              location={"Ahmedabad, India"}
+              button={"Visit Website"}
               profile={profile2}
               name={"Ronal Jones"}
-              color={'#E56135'}
-              />
+              color={"#E56135"}
+            />
             <JobPosts
-              coverImg={''}
+              coverImg={""}
               categoryImg={job}
               icon={bag}
-              title={
-                "Software Developer"
-              }
-              date={
-                'Innovaccer Analytics Private Ltd.'
-              }
-              location={'Noida, India'}
-              button={'Apply on Timesjobs'}
+              title={"Software Developer"}
+              date={"Innovaccer Analytics Private Ltd."}
+              location={"Noida, India"}
+              button={"Apply on Timesjobs"}
               profile={profile1}
               name={"Ronal Jones"}
-              color={'#02B875'}
+              color={"#02B875"}
             />
           </div>
-          <div className="col-md-4 ps-5">
+          <div className="col-md-4 ps-5 d-none d-lg-block">
             <div
               className="d-flex justify-content-between"
               style={{
@@ -172,24 +197,36 @@ const HeroSection = () => {
                 <img
                   src={location}
                   alt=""
-                  style={{ width: "20px", height: "20px", marginRight:'4px'}}
+                  style={{ width: "20px", height: "20px", marginRight: "4px" }}
                   className="img-fluid"
                 />
-                {userLogIn ? "|Enter your location":"Noida, India"}
+                {userLogIn ? "|Enter your location" : "Noida, India"}
               </p>
 
               <img
-                src={userLogIn ? cross :pen}
+                src={userLogIn ? cross : pen}
                 role="button"
-                style={{ width: "15px", height: "15px", marginTop:'2px' }}
+                style={{ width: "15px", height: "15px", marginTop: "2px" }}
                 alt=""
               />
             </div>
-            <img src={alertIcon} alt="" />
-            {userLogIn && <RecommendedGroup/>}
+            <img src={alertIcon} alt="" className="d-none d-lg-block"/>
+            <div className="d-none d-lg-block">
+
+            {userLogIn && <RecommendedGroup />}
+            </div>
           </div>
         </div>
       </section>
+      {userLogIn && (
+        <img
+          role="button"
+          src={androidPostIcon}
+          style={{ width: "54px", height: "54px", bottom: "0px", right: "0px" }}
+          className="d-lg-none position-fixed"
+          alt=""
+        />
+      )}
     </>
   );
 };

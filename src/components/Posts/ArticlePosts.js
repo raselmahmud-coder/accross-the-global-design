@@ -50,6 +50,7 @@ const ArticlePosts = ({
         <div className="row row-cols-2">
           <div className="col d-flex align-items-center">
             <img src={profile} alt="" role="button" />
+            <div className="">
             <h3
               style={{
                 fontWeight: "600",
@@ -59,17 +60,19 @@ const ArticlePosts = ({
               }}>
               {name}
             </h3>
+            <span className="d-sm-block d-lg-none ms-3">1.4k views</span>
+          </div>
           </div>
 
           <div className="col">
             <div className="d-flex justify-content-end align-items-center">
               <img
                 src={eye}
-                className="img-fluid"
+                className="img-fluid d-none d-lg-block"
                 style={{ width: "18px", height: "18px", marginRight: "8px" }}
                 alt=""
               />
-              1.4k views
+              <span className="d-none d-lg-block">1.4k views</span>
               <img src={share} alt="" className="ms-5" role="button" />
             </div>
           </div>

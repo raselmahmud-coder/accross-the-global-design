@@ -1,0 +1,11 @@
+.customSpace {
+  top: -149px;
+  margin-left: 130px;
+}
+
+@media only screen and (max-width: 767px) {
+    .customSpace {
+        top: 190px;
+        margin-left: 0px;
+  }
+}

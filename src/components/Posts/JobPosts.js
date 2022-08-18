@@ -1,14 +1,20 @@
 import eye from "../../assets/eye.png";
 import share from "../../assets/share-icon.png";
 import dot from "../../assets/3dot-icon.png";
+import locationIcon from "../../assets/location-icon.png";
+
 
 const JobPosts = ({
   coverImg,
   categoryImg,
   title,
-  description,
+  date,
+  location,
+  button,
+  icon,
   profile,
   name,
+  color,
 }) => {
   return (
     <article
@@ -38,15 +44,40 @@ const JobPosts = ({
             alt=""
           />
         </div>
-        <p
+        <div
+          className="d-flex align-items-center"
           style={{
-            fontWeight: "400",
-            fontSize: "19px",
-            lineHeight: "134.17%",
-            color: "#5C5C5C",
+            fontWeight: "500",
+            fontSize: "15px",
+            lineHeight: "20px",
+            color: "#000000",
           }}>
-          {description}
-        </p>
+          <p className="d-flex align-items-center">
+            <img
+              src={icon}
+              style={{ width: "20px", height: "20px", marginRight: "4px" }}
+              alt=""
+            />
+            {date}
+          </p>
+          <p className="ms-md-5 d-flex align-items-center">
+            <img src={locationIcon} style={{ marginRight: "4px" }} alt="" />
+            {location}
+          </p>
+        </div>
+        <button
+          className="btn"
+          style={{
+            display: "block",
+            width: "100%",
+            border: "0.7px solid #A9AEB8",
+            marginTop: "16px",
+            marginBottom: "32px",
+            color: `${ color }`,
+          }}
+          type="button">
+          {button}
+        </button>
         <div className="row row-cols-2">
           <div className="col d-flex align-items-center">
             <img src={profile} alt="" role="button" />

@@ -10,6 +10,7 @@ import fbIcon from "../../assets/fb-icon.png";
 import googleIcon from "../../assets/google-icon.png";
 import registrationIcon from "../../assets/registration-cover.png";
 import LoginModal from "./LoginModal";
+import customStyle from "./RegistrationModal.module.css";
 
 function RegistrationModal(props) {
   const [modalShow, setModalShow] = useState(false);
@@ -20,18 +21,21 @@ function RegistrationModal(props) {
   };
   return (
     <>
-      <LoginModal show={modalShow} setModalShowReg={props.setModalShowReg} onHide={() => setModalShow(false)} />
+      <LoginModal
+        show={modalShow}
+        setModalShowReg={props.setModalShowReg}
+        onHide={() => setModalShow(false)}
+      />
       <Modal
+        centered
+        className={customStyle.modalPosition}
         size="lg"
         {...props}
-        aria-labelledby="contained-modal-title-vcenter"
-        centered>
-        <div
-          className="d-flex align-items-center justify-content-center"
-          style={{ backgroundColor: "#EFFFF4", borderRadius: "10px" }}>
+        aria-labelledby="contained-modal-title-vcenter">
+        <div className={customStyle.topHeader}>
           <h4
             id="contained-modal-title-vcenter"
-            className="text-center py-lg-3 m-0"
+            className="text-center pt-lg-3 m-0 d-none d-lg-block"
             style={{
               backgroundColor: "#EFFFF4",
               color: "#008A45",
@@ -39,6 +43,7 @@ function RegistrationModal(props) {
               fontSize: "14px",
               lineHeight: "16px",
               textAlign: "center",
+              borderRadius: "inherit",
             }}>
             Let's learn, share & inspire each other with our passion for
             computer engineering. Sign up now 🤘🏼
@@ -47,13 +52,7 @@ function RegistrationModal(props) {
           <img
             src={crossIcon}
             alt="cross"
-            className=""
-            style={{
-              cursor: "pointer",
-              position: "absolute",
-              right: "-24px",
-              top: "-20px",
-            }}
+            className={customStyle.crossIcon}
             onClick={props.onHideReg}
           />
         </div>
@@ -62,7 +61,7 @@ function RegistrationModal(props) {
             <Row>
               <div className="d-flex justify-content-between align-items-center">
                 <h2
-                  className="py-lg-3"
+                  className="pb-lg-3 pb-2"
                   style={{
                     fontWeight: "700",
                     fontSize: "24px",
@@ -71,6 +70,7 @@ function RegistrationModal(props) {
                   Create Account
                 </h2>
                 <p
+                  className="d-none d-lg-block"
                   style={{
                     fontWeight: "400",
                     fontSize: "13px",
@@ -113,20 +113,24 @@ function RegistrationModal(props) {
                     <img
                       src={eye}
                       alt="cross"
-                      className="position-relative"
-                      style={{
-                        cursor: "pointer",
-                        top: "-34px",
-                        left: "334px",
-                      }}
+                      className={customStyle.eyeStyle + " position-relative"}
                     />
                   </Form.Group>
-                  <Button
-                    variant="primary"
-                    type="submit"
-                    className="w-100 rounded-pill mt-4">
-                    Create Account
-                  </Button>
+                  <div className="d-flex align-items-center justify-content-between">
+                    <Button
+                      variant="primary"
+                      type="submit"
+                      className={
+                        customStyle.createBtn + " rounded-pill mt-lg-4"
+                      }>
+                      Create Account
+                    </Button>
+                    <Button onClick={handleSignIn}
+                      variant="light"
+                      className="d-lg-none rounded-pill d-md-none text-dark mt-lg-4">
+                      or, Sign In
+                    </Button>
+                  </div>
                 </Form>
                 <div>
                   <Button className="w-100 rounded-pill bg-light border-secondary text-dark mt-4 mb-3">
@@ -143,9 +147,10 @@ function RegistrationModal(props) {
                 <img
                   src={registrationIcon}
                   alt=""
-                  className="img-fluid w-100"
+                  className="img-fluid w-100 d-none d-lg-block"
                 />
                 <footer
+                  className="text-center mt-lg-0 mt-3"
                   style={{
                     fontWeight: "400",
                     fontSize: "11px",

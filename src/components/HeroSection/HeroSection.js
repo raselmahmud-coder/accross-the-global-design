@@ -24,27 +24,39 @@ import alertIcon from "../../assets/alert-icon.png";
 import mobileCover from "../../assets/mobile-cover-min.png";
 import ArticlePosts from "../Posts/ArticlePosts";
 import JobPosts from "../Posts/JobPosts";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import RecommendedGroup from "../RecommendedGroup/RecommendedGroup";
 import customSpace from "./hero.module.css";
+import RegistrationModal from "../NavBar/RegistrationModal";
+// custom style css
+const customStyles = {
+  fontDesign: {
+    fontSize: "15px",
+    fontWeight: "500",
+    lineHeight: "20px",
+  },
+  customPadding: {
+    padding: "0px 64px",
+  },
+  customBtn: {
+    color: "#6A6A6B",
+  },
+};
 const HeroSection = () => {
   const [userLogIn, setUserLogIn] = useState(false);
-  const customStyles = {
-    fontDesign: {
-      fontSize: "15px",
-      fontWeight: "500",
-      lineHeight: "20px",
-    },
-    customPadding: {
-      padding: "0px 64px",
-    },
-    customBtn: {
-      color: "#6A6A6B",
-    },
+  const [modalShowReg, setModalShowReg] = useState(false);
+
+  const handleRegis = () => {
+    setModalShowReg(true);
   };
 
   return (
     <>
+      <RegistrationModal
+        show={modalShowReg}
+        setModalShowReg={setModalShowReg}
+        onHideReg={() => setModalShowReg(false)}
+      />
       <section
         className="img-fluid text-white"
         style={{
@@ -71,9 +83,13 @@ const HeroSection = () => {
             style={{ width: "24px", height: "24px" }}
             alt=""
           />
-          <button className="btn btn-outline-light">
-            {userLogIn ? "Leave Group" : "Join Group"}
-          </button>
+          {!userLogIn ? (
+            <button onClick={handleRegis} className="btn btn-outline-light">
+              Join Group
+            </button>
+          ) : (
+            <button className="btn btn-outline-light">Leave Group</button>
+          )}
         </div>
         <div
           className={`${customSpace.customSpace} position-relative text-white ps-5 ps-md-0 ps-lg-0`}>
@@ -210,10 +226,9 @@ const HeroSection = () => {
                 alt=""
               />
             </div>
-            <img src={alertIcon} alt="" className="d-none d-lg-block"/>
+            <img src={alertIcon} alt="" className="d-none d-lg-block" />
             <div className="d-none d-lg-block">
-
-            {userLogIn && <RecommendedGroup />}
+              {userLogIn && <RecommendedGroup />}
             </div>
           </div>
         </div>

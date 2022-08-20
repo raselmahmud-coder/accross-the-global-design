@@ -7,11 +7,21 @@ import Navbar from "react-bootstrap/Navbar";
 import HeroSection from "../HeroSection/HeroSection";
 import { useState } from "react";
 import profile1 from "../../assets/profile1.png";
+import RegistrationModal from "./RegistrationModal";
 
 const NavBar = () => {
-  const [userLogIn, setUserLogIn] = useState(true);
+  const [userLogIn, setUserLogIn] = useState(false);
+
+  const [modalShowReg, setModalShowReg] = useState(false);
+
+  const handleRegistration = () => {
+    setModalShowReg(true)
+  };
   return (
     <>
+      
+
+      <RegistrationModal show={modalShowReg} setModalShowReg={setModalShowReg} onHideReg={() => setModalShowReg(false)} />
       <Navbar expand="lg" className="d-md-block d-none">
         <Container>
           <div className="container">
@@ -21,10 +31,11 @@ const NavBar = () => {
               </div>
               <div className="col-md-4">
                 <p
-                  className="mt-md-2 px-4 py-2 text-center h6"
+                  className="mt-md-2 px-4 py-2 text-center"
                   style={{
                     backgroundColor: "#F2F2F2",
                     borderRadius: "21px",
+                    fontSize:"14px"
                   }}>
                   <img src={search} alt="" className="me-3" />
                   Search for your favorite groups in ATG
@@ -54,14 +65,16 @@ const NavBar = () => {
                   </p>
                 ) : (
                   <p
+                    onClick={handleRegistration}
                     className="mt-md-3 text-center"
                     style={{
                       fontSize: "16px",
                       lineHeight: "21px",
                       fontWeight: "500",
+                      cursor: "pointer",
                     }}>
-                    Create account.
-                    <span style={{ color: "#2F6CE5" }}>It’s free!</span>
+                    Create account{" "}
+                    <span style={{ color: "#2F6CE5" }}>It's free!</span>
                     <img src={arrow} alt="" />
                   </p>
                 )}

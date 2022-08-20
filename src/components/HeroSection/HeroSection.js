@@ -28,7 +28,7 @@ import { useState } from "react";
 import RecommendedGroup from "../RecommendedGroup/RecommendedGroup";
 import customSpace from "./hero.module.css";
 const HeroSection = () => {
-  const [userLogIn, setUserLogIn] = useState(true);
+  const [userLogIn, setUserLogIn] = useState(false);
   const customStyles = {
     fontDesign: {
       fontSize: "15px",
@@ -83,7 +83,7 @@ const HeroSection = () => {
       </section>
 
       <section className="container-lg container-sm px-lg-5">
-        <div className="row" style={{ marginTop: "47px" }}>
+        <div className="row pt-lg-5" style={{ marginTop: "47px" }}>
           <div className="col-md-8 d-none d-lg-block">
             <Nav
               activeKey="/"

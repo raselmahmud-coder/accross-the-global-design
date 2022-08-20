@@ -1,6 +1,7 @@
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex');
 *,
 body {
-  font-family: "IBM Plex Sans";
+  font-family: 'IBM Plex Sans', sans-serif;
 }
 .nav-link {
   color: #8a8a8a;

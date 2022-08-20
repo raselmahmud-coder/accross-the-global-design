@@ -17,8 +17,25 @@
   top: -50px;
   z-index: 222;
 }
+.crossIconLogin {
+  cursor: pointer;
+  position: relative;
+  left: 793px;
+  top: -66px;
+  z-index: 222;
+}
 @media only screen and (max-width: 600px) {
   .crossIcon {
+    position: sticky;
+    width: 24px;
+    height: 24px;
+    right: -20px;
+    top: 0px;
+    background: #000;
+    border-radius: 50%;
+    transform: translate(430px, 15px);
+  }
+  .crossIconLogin{
     position: sticky;
     width: 24px;
     height: 24px;

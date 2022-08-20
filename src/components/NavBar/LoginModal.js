@@ -44,7 +44,7 @@ function LoginModal(props) {
           <img
             src={crossIcon}
             alt="cross"
-            className={customStyle.crossIcon}
+            className={customStyle.crossIconLogin}
             onClick={props.onHide}
           />
         </div>

@@ -1,3 +1,4 @@
+import axios from "axios";
 import React, { useState } from "react";
 import { Button, Form } from "react-bootstrap";
 import Col from "react-bootstrap/Col";
@@ -11,13 +12,37 @@ import googleIcon from "../../assets/google-icon.png";
 import registrationIcon from "../../assets/registration-cover.png";
 import LoginModal from "./LoginModal";
 import customStyle from "./RegistrationModal.module.css";
-
+import { toast } from "react-toastify";
 function RegistrationModal(props) {
   const [modalShow, setModalShow] = useState(false);
+  const [simpleSpinner, setSimpleSpinner] = useState(false);
 
   const handleSignIn = () => {
     props.onHideReg();
     setModalShow(true);
+  };
+  const handleForm = async (e) => {
+    setSimpleSpinner(true);
+    e.preventDefault();
+    const userName = e.target.username.value;
+    const email = e.target.email.value;
+    const password = e.target.password.value;
+    const response = await axios.post(`http://localhost:5000/registration`, {
+      userName,
+      email,
+      password,
+    });
+    setSimpleSpinner(false);
+    props.onHideReg();
+    if (response.data.status === 200) {
+      toast.success("User was created", {
+        toastId: "regis",
+      });
+    } else {
+      toast.error("there was a problem", {
+        toastId: "regis-err",
+      });
+    }
   };
   return (
     <>
@@ -88,9 +113,10 @@ function RegistrationModal(props) {
             </Row>
             <Row className="mb-3">
               <Col xs={12} md={6}>
-                <Form>
+                <Form onSubmit={handleForm}>
                   <Form.Group className="mb-3" controlId="formBasicEmail">
                     <Form.Control
+                      name="username"
                       type="text"
                       placeholder="Username"
                       className="py-2"
@@ -99,6 +125,7 @@ function RegistrationModal(props) {
 
                   <Form.Group className="mb-3" controlId="formBasicEmail">
                     <Form.Control
+                      name="email"
                       type="email"
                       placeholder="Email"
                       className="py-2"
@@ -106,6 +133,7 @@ function RegistrationModal(props) {
                   </Form.Group>
                   <Form.Group className="mb-3" controlId="formBasicEmail">
                     <Form.Control
+                      name="password"
                       type="password"
                       placeholder="Password"
                       className="py-2"
@@ -118,14 +146,16 @@ function RegistrationModal(props) {
                   </Form.Group>
                   <div className="d-flex align-items-center justify-content-between">
                     <Button
+                      disabled={simpleSpinner}
                       variant="primary"
                       type="submit"
                       className={
                         customStyle.createBtn + " rounded-pill mt-lg-4"
                       }>
-                      Create Account
+                      {simpleSpinner ? "Loading..." : "Create Account"}
                     </Button>
-                    <Button onClick={handleSignIn}
+                    <Button
+                      onClick={handleSignIn}
                       variant="light"
                       className="d-lg-none rounded-pill d-md-none text-dark mt-lg-4">
                       or, Sign In

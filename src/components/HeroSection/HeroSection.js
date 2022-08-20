@@ -28,6 +28,7 @@ import { useEffect, useState } from "react";
 import RecommendedGroup from "../RecommendedGroup/RecommendedGroup";
 import customSpace from "./hero.module.css";
 import RegistrationModal from "../NavBar/RegistrationModal";
+import { toast } from 'react-toastify'
 // custom style css
 const customStyles = {
   fontDesign: {

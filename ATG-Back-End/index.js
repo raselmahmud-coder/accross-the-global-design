@@ -3,7 +3,7 @@ const express = require("express");
 const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 const cors = require("cors");
 const jwt = require("jsonwebtoken");
-const bcrypt = require("bcrypt")
+const bcrypt = require("bcrypt");
 const app = express();
 const port = process.env.PORT || 5000;
 
@@ -47,51 +47,77 @@ const client = new MongoClient(uri, {
 async function run() {
   client.connect((err) => {
     if (err) {
-      console.log("database error"+ err);
+      console.log("database error" + err);
     }
     console.log("connected");
   });
   const userCollection = client.db("ATG_DB").collection("users");
   // user get or login
-  app.get("/login", async (req, res) => {
-    const { email, password } = req.headers;
-    console.log(email, "got it", password);
-    // const user = req.body;
-    const filter = { email: email };
-    const found = await userCollection.findOne(filter);
-    //   console.log(found);
-    if (found.email === email && found.password === password) {
-      console.log("info true");
-      const token = jwt.sign(
-        { email: email },
-        process.env.ACCESS_TOKEN_SECRET,
-        {
-          expiresIn: "1d",
-        }
-      );
-      res.send({ response: "success", status: 200, token });
-    } else {
+  app.post("/login", async (req, res) => {
+    try {
+      const { userName, password } = req.body;
+      const filter = { userName };
+      const found = await userCollection.findOne(filter);
+      const isPassValid = await bcrypt.compare(password, found.password);
+      console.log(isPassValid);
+      if (found.userName === userName && isPassValid) {
+        // console.log("info true");
+        const token = jwt.sign(
+          { userName, userId: found._id },
+          process.env.ACCESS_TOKEN_SECRET,
+          {
+            expiresIn: "1d",
+          },
+        );
+        res.send({ response: "success", status: 200, token });
+      } else {
+        res.send({ response: "not found user", status: 400 });
+      }
+    } catch (error) {
       res.send({ response: "not found user", status: 400 });
+      console.log("login error", error);
     }
   });
   // user creation
   app.post("/registration", async (req, res) => {
-      try {
-        const { userName, email, password } = req.body;
-        const passHashing = await bcrypt.hash(password, 10);
-        const createObj = {
-          userName,
-          email,
-          password: passHashing,
-        };
-        // console.log(createObj);
-        await userCollection.insertOne(createObj);
-        res.send({ response: "success", status: 200 });
+    try {
+      const { userName, email, password } = req.body;
+      const passHashing = await bcrypt.hash(password, 10);
+      const createObj = {
+        userName,
+        email,
+        password: passHashing,
+      };
+      // console.log(createObj);
+      await userCollection.insertOne(createObj);
+      res.send({ response: "success", status: 200 });
     } catch (error) {
-        console.log("registration error"+error);
+      res.send({ response: "internal error", status: 500 });
+      console.log("registration error" + error);
     }
   });
-  
- 
+
+  // forget password api
+  app.post("/forget-password", async (req, res) => {
+    try {
+      const { userName, email, newPassword } = req.body;
+      console.log(newPassword);
+      const filter = { userName };
+      const result = await userCollection.findOne(filter);
+      console.log(result);
+      if (result.email === email && result.userName === userName) {
+        const passHashing = await bcrypt.hash(newPassword, 10);
+        await userCollection.updateOne(filter, {
+          $set: { password: passHashing },
+        });
+        res.send({ response: "success", status: 200 });
+      } else {
+        res.send({ response: "internal error", status: 500 });
+      }
+    } catch (error) {
+      res.send({ response: "internal error", status: 500 });
+      console.log("registration error" + error);
+    }
+  });
 }
 run().catch(console.dir);

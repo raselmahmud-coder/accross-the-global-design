@@ -46,6 +46,12 @@ const customStyles = {
 const HeroSection = () => {
   const [userLogIn, setUserLogIn] = useState(false);
   const [modalShowReg, setModalShowReg] = useState(false);
+  const token = localStorage.getItem("access_token");
+  useEffect(() => {
+    if (token) {
+      setUserLogIn(true);
+    }
+  }, [token]);
 
   const handleRegis = () => {
     setModalShowReg(true);

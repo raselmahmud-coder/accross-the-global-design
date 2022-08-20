@@ -10,16 +10,44 @@ import fbIcon from "../../assets/fb-icon.png";
 import googleIcon from "../../assets/google-icon.png";
 import registrationIcon from "../../assets/registration-cover.png";
 import customStyle from "./RegistrationModal.module.css";
-
+import axios from "axios";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 function LoginModal(props) {
+  const [simpleSpinner, setSimpleSpinner] = useState(false);
+  const navigate = useNavigate();
+
   const handleSignUp = () => {
     props.setModalShowReg(true);
     props.onHide();
   };
+  const handleLogin = async (e) => {
+    setSimpleSpinner(true);
+    e.preventDefault();
+    const userName = e.target.username.value;
+    const password = e.target.password.value;
+    console.log(userName, password);
+    const response = await axios.post(`http://localhost:5000/login`, {
+      userName,
+      password,
+    });
+    props.onHide();
+    setSimpleSpinner(false);
+    if (response.data.status === 200) {
+      localStorage.setItem("access_token", JSON.stringify(response.data.token));
+      window.location.reload();
+    } else {
+      toast.error("there was an error occured!");
+    }
+    // console.log("login", response.data.token);
+  };
+  const handleNavigate = () => {
+    navigate("/forget-password", { replace: true });
+  }
   return (
     <>
       <Modal
-        className={customStyle.modalPosition}
+        className={customStyle.modalPositionLogin}
         size="lg"
         {...props}
         aria-labelledby="contained-modal-title-vcenter"
@@ -80,9 +108,10 @@ function LoginModal(props) {
             </Row>
             <Row className="mb-3">
               <Col xs={12} md={6}>
-                <Form>
+                <Form onSubmit={handleLogin}>
                   <Form.Group className="mb-3" controlId="formBasicEmail">
                     <Form.Control
+                      name="username"
                       type="text"
                       placeholder="Username"
                       className="py-2"
@@ -90,27 +119,29 @@ function LoginModal(props) {
                   </Form.Group>
                   <Form.Group className="mb-3" controlId="formBasicEmail">
                     <Form.Control
+                      name="password"
                       type="password"
                       placeholder="Password"
                       className="py-2"
                     />
                     <img
                       src={eye}
-                      alt="cross"
+                      alt="eye"
                       className={customStyle.eyeStyle + " position-relative"}
-                      
                     />
                   </Form.Group>
                   <div className="d-flex align-items-center justify-content-between">
                     <Button
-                      variant="primary"
+                      disabled={simpleSpinner}
+                      variant={simpleSpinner ? "secondary" : "primary"}
                       type="submit"
                       className={
                         customStyle.createBtn + " rounded-pill mt-lg-4"
                       }>
-                      Sign In
+                      {simpleSpinner ? "Loading..." : "Sign In"}
                     </Button>
-                    <Button onClick={handleSignUp}
+                    <Button
+                      onClick={handleSignUp}
                       variant="light"
                       className="d-lg-none rounded-pill d-md-none text-dark mt-lg-4">
                       or, Create Account
@@ -127,9 +158,10 @@ function LoginModal(props) {
                     <img src={googleIcon} alt="" /> Sign in with Google
                   </Button>
                   <p
+                    onClick={handleNavigate}
                     className="mt-3"
                     style={{
-                      cursor:"pointer",
+                      cursor: "pointer",
                       fontWeight: "500",
                       fontSize: "12px",
                       lineHeight: "16px",

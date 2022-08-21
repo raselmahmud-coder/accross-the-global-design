@@ -28,7 +28,9 @@ import { useEffect, useState } from "react";
 import RecommendedGroup from "../RecommendedGroup/RecommendedGroup";
 import customSpace from "./hero.module.css";
 import RegistrationModal from "../NavBar/RegistrationModal";
-import { toast } from 'react-toastify'
+import { toast } from "react-toastify";
+import { Button } from "react-bootstrap";
+import PostModal from "../Posts/PostModal";
 // custom style css
 const customStyles = {
   fontDesign: {
@@ -47,11 +49,32 @@ const HeroSection = () => {
   const [userLogIn, setUserLogIn] = useState(false);
   const [modalShowReg, setModalShowReg] = useState(false);
   const token = localStorage.getItem("access_token");
+  const [modalShowPost, setModalShowPost] = useState(false);
+  const [reFetch, setReFetch] = useState('')
+  const [AllPost, setAllPost] = useState([]);
+  // console.log(AllPost);
+  const handleShowPost = () => {
+    setModalShowPost(true);
+  };
+
   useEffect(() => {
     if (token) {
       setUserLogIn(true);
     }
   }, [token]);
+  useEffect(() => {
+    fetch(`http://localhost:5000/user-post`, {
+      method: "GET",
+      headers: {
+        "content-type": "application/json",
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        setAllPost(data.result)
+        setReFetch('')
+      });
+  }, [reFetch]);
 
   const handleRegis = () => {
     setModalShowReg(true);
@@ -59,6 +82,8 @@ const HeroSection = () => {
 
   return (
     <>
+      <PostModal show={modalShowPost} onHide={() => setModalShowPost(false)} />
+
       <RegistrationModal
         show={modalShowReg}
         setModalShowReg={setModalShowReg}
@@ -136,6 +161,7 @@ const HeroSection = () => {
           </div>
           <div className="col-md-4 d-flex justify-content-end d-none d-lg-block">
             <button
+              onClick={handleShowPost}
               className="btn btn-light me-2"
               style={customStyles.fontDesign}>
               Write a post
@@ -159,32 +185,27 @@ const HeroSection = () => {
 
         <div className="row">
           <div className="col-md-8 pe-lg-5">
-            <ArticlePosts
-              coverImg={cover1}
-              categoryImg={article}
-              title={
-                "What if famous brands had regular fonts? Meet RegulaBrands!"
-              }
-              description={
-                "I’ve worked in UX for the better part of a decade. From now on, I plan to rei…"
-              }
-              profile={profile4}
-              name={"Sarthak Kamra"}
-            />
-            <ArticlePosts
-              coverImg={cover2}
-              categoryImg={education}
-              title={
-                "Tax Benefits for Investment under National Pension Scheme launched by Government"
-              }
-              description={
-                "I’ve worked in UX for the better part of a decade. From now on, I plan to rei…"
-              }
-              profile={profile3}
-              name={"Sarah West"}
-            />
+            {AllPost.map((post) => (
+              <ArticlePosts
+                key={post._id}
+                currentLike={post?.like}
+                currentComment={post?.comment}
+                setReFetch={setReFetch}
+                postId={post._id}
+                coverImg={post.imgUrl}
+                categoryImg={article}
+                title={
+                  post.title
+                }
+                description={
+                  post.description
+                }
+                profile={profile4}
+                name={"Sarthak Kamra"}
+              />
+            ))}
 
-            <JobPosts
+           {/*  <JobPosts
               coverImg={cover3}
               categoryImg={meetup}
               title={"Finance & Investment Elite Social Mixer @Lujiazui"}
@@ -195,19 +216,8 @@ const HeroSection = () => {
               profile={profile2}
               name={"Ronal Jones"}
               color={"#E56135"}
-            />
-            <JobPosts
-              coverImg={""}
-              categoryImg={job}
-              icon={bag}
-              title={"Software Developer"}
-              date={"Innovaccer Analytics Private Ltd."}
-              location={"Noida, India"}
-              button={"Apply on Timesjobs"}
-              profile={profile1}
-              name={"Ronal Jones"}
-              color={"#02B875"}
-            />
+            /> */}
+          
           </div>
           <div className="col-md-4 ps-5 d-none d-lg-block">
             <div

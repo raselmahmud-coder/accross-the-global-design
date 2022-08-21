@@ -3,7 +3,6 @@ import { Button, Form } from "react-bootstrap";
 import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
-import eye from "../../assets/eye.png";
 import registrationIcon from "../../assets/registration-cover.png";
 import customStyle from "../NavBar/RegistrationModal.module.css";
 import axios from "axios";

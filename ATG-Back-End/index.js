@@ -164,12 +164,35 @@ async function run() {
       console.log("post error" + error);
     }
   });
-  // user get api
-  app.delete("/user-post/:id", async (req, res) => {
+
+
+  // like api
+  app.put("/user-post/:id", async (req, res) => {
     try {
-      const {id} = req.params;
-      const result = await postCollection.deleteOne({_id:ObjectId(id)})
-      console.log(result);
+      const { id } = req.params;
+      const {like, comment} = req.body;
+      console.log(like, id)
+      const filter = { _id: ObjectId(id) };
+      const options = { upsert: true };
+      let result;
+      if (like) {
+        const updateDoc = {
+          $set: {
+            like: like
+          },
+        };
+         result = await postCollection.updateOne(filter, updateDoc, options)
+      } else if (comment) {
+        console.log("this comment");
+        const updateDoc = {
+          $set: {
+            comment: comment
+          },
+        };
+         result = await postCollection.updateOne(filter, updateDoc, options)
+        
+      }
+      // console.log(result);
       res.send({ result, status: 200 });
      
     } catch (error) {

@@ -24,6 +24,13 @@
   top: -66px;
   z-index: 222;
 }
+.crossIconPost{
+  cursor: pointer;
+  position: relative;
+  left: 790px;
+  top: -30px;
+  z-index: 222;
+}
 @media only screen and (max-width: 600px) {
   .crossIcon {
     position: sticky;

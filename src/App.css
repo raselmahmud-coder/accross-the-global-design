@@ -13,3 +13,6 @@ body {
   line-height: 21px;
   color: #000;
 }
+.customDrop{
+  transform: translate3d(-75px, 46px, 0px) !important;
+}

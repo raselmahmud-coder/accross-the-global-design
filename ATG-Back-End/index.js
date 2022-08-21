@@ -121,16 +121,44 @@ async function run() {
   });
 
 
-  // user post api
+  // user post or put api
   app.post("/user-post", async (req, res) => {
     try {
-      const { category, title, description, imgUrl } = req.body;
-      const result = await postCollection.insertOne({category, title, description, imgUrl});
-      if (result.acknowledged) {
-        res.send({ response: "success", status: 200 });
+      const requestData = req.body;
+      const createObj = {};
+      for (const key in requestData) {
+          const element = requestData[key];
+        if (element) {
+            createObj[key]= requestData[key]
+          }
+        
+      }
+      // console.log(createObj)
+      // let result;
+      if (createObj.id) {
+        const filter = { _id: ObjectId(createObj.id) };
+        const options = { upsert: true };
+          const updateDoc = {
+            $set: createObj,
+          };
+        const result = await postCollection.updateOne(filter, updateDoc, options);
+        console.log("Put request")
+        if (result.modifiedCount) {
+          res.send({ response: "success", status: 200 });
+        } else {
+          res.send({ response: "internal error", status: 500 });
+        } 
       } else {
-        res.send({ response: "internal error", status: 500 });
-      } 
+        console.log("hello post");
+        const { category, title, description, imgUrl } = req.body;
+        const result = await postCollection.insertOne({category, title, description, imgUrl});
+        if (result.acknowledged) {
+          res.send({ response: "success", status: 200 });
+        } else {
+          res.send({ response: "internal error", status: 500 });
+        } 
+        
+      }
     } catch (error) {
       res.send({ response: "internal error", status: 500 });
       console.log("post error" + error);

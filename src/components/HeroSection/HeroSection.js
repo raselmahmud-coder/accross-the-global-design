@@ -5,31 +5,18 @@ import location from "../../assets/location-icon.png";
 import pen from "../../assets/pen-icon.png";
 import cross from "../../assets/cross.png";
 import profile4 from "../../assets/profile4.png";
-import profile3 from "../../assets/profile3.png";
-import profile2 from "../../assets/profile2.png";
-import profile1 from "../../assets/profile1.png";
-import cover1 from "../../assets/post-img1.png";
-import cover2 from "../../assets/post-img2.png";
-import cover3 from "../../assets/post-image3.png";
-import bag from "../../assets/bag.png";
 import arrowRight from "../../assets/arrow-right.png";
-import calenderIcon from "../../assets/calender-icon.png";
 import article from "../../assets/article.png";
-import education from "../../assets/education-icon.png";
-import meetup from "../../assets/meetup.png";
-import job from "../../assets/job-icon.png";
 import arrowLeft from "../../assets/arrow_back.png";
 import androidPostIcon from "../../assets/androidPen.png";
 import alertIcon from "../../assets/alert-icon.png";
 import mobileCover from "../../assets/mobile-cover-min.png";
 import ArticlePosts from "../Posts/ArticlePosts";
-import JobPosts from "../Posts/JobPosts";
 import { useEffect, useState } from "react";
 import RecommendedGroup from "../RecommendedGroup/RecommendedGroup";
 import customSpace from "./hero.module.css";
 import RegistrationModal from "../NavBar/RegistrationModal";
 import { toast } from "react-toastify";
-import { Button } from "react-bootstrap";
 import PostModal from "../Posts/PostModal";
 // custom style css
 const customStyles = {
@@ -50,11 +37,18 @@ const HeroSection = () => {
   const [modalShowReg, setModalShowReg] = useState(false);
   const token = localStorage.getItem("access_token");
   const [modalShowPost, setModalShowPost] = useState(false);
-  const [reFetch, setReFetch] = useState('')
+  const [reFetch, setReFetch] = useState("");
   const [AllPost, setAllPost] = useState([]);
   // console.log(AllPost);
   const handleShowPost = () => {
-    setModalShowPost(true);
+    if (token) {
+      
+      setModalShowPost(true);
+    } else {
+      toast.error("You need to login first", {
+        toastId: "token",
+      });
+    }
   };
 
   useEffect(() => {
@@ -71,8 +65,8 @@ const HeroSection = () => {
     })
       .then((res) => res.json())
       .then((data) => {
-        setAllPost(data.result)
-        setReFetch('')
+        setAllPost(data.result);
+        setReFetch("");
       });
   }, [reFetch]);
 
@@ -82,7 +76,7 @@ const HeroSection = () => {
 
   return (
     <>
-      <PostModal show={modalShowPost} onHide={() => setModalShowPost(false)} />
+      <PostModal setReFetch={setReFetch} show={modalShowPost} onHide={() => setModalShowPost(false)} />
 
       <RegistrationModal
         show={modalShowReg}
@@ -194,18 +188,14 @@ const HeroSection = () => {
                 postId={post._id}
                 coverImg={post.imgUrl}
                 categoryImg={article}
-                title={
-                  post.title
-                }
-                description={
-                  post.description
-                }
+                title={post.title}
+                description={post.description}
                 profile={profile4}
                 name={"Sarthak Kamra"}
               />
             ))}
 
-           {/*  <JobPosts
+            {/*  <JobPosts
               coverImg={cover3}
               categoryImg={meetup}
               title={"Finance & Investment Elite Social Mixer @Lujiazui"}
@@ -217,7 +207,6 @@ const HeroSection = () => {
               name={"Ronal Jones"}
               color={"#E56135"}
             /> */}
-          
           </div>
           <div className="col-md-4 ps-5 d-none d-lg-block">
             <div

@@ -6,6 +6,7 @@ import { Button, Dropdown, Form, Modal } from "react-bootstrap";
 import { toast } from "react-toastify";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import PostModal from "./PostModal";
 
 const ArticlePosts = ({
   postId,
@@ -20,7 +21,11 @@ const ArticlePosts = ({
 }) => {
   const [simpleSpinner, setSimpleSpinner] = useState(false);
   const [show, setShow] = useState(false);
-  // const navigate = useNavigate()
+  const [modalShowPost, setModalShowPost] = useState({
+    showPost: false,
+    editId: "",
+  });
+  const navigate = useNavigate()
   const handleClose = () => setShow(false);
   const handleDelete = (id) => {
     const confirm = window.confirm("are you sure?");
@@ -103,11 +108,23 @@ const ArticlePosts = ({
       });
   };
 
-  const handleGetComment = () => {
-    alert("Coming Some will see specific comment here");
+  const handleEdit = (id) => {
+    setModalShowPost({ ...modalShowPost, showPost: true, editId: id });
+  };
+  const handleGetComment = (id) => {
+    // alert("Coming Some will see specific comment here");
+    navigate("/comment", {data:"id"})
   };
   return (
     <>
+      <PostModal
+        setReFetch={setReFetch}
+        id={modalShowPost.editId}
+        show={modalShowPost.showPost}
+        onHide={() => setModalShowPost({ showPost: false })}
+      />
+
+      {/* comment modal */}
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
           <Modal.Title>Post a Comment</Modal.Title>
@@ -138,7 +155,7 @@ const ArticlePosts = ({
           borderRadius: "4px",
           marginBottom: "16px",
         }}>
-        <img src={coverImg} className="img-fluid" alt="" />
+        <img src={coverImg} className="img-fluid w-100" style={{height:'220px'}} alt="" />
         <div style={{ padding: "20px" }}>
           <img src={categoryImg} className="img-fluid" alt="" />
           <div className="d-flex justify-content-between">
@@ -172,7 +189,10 @@ const ArticlePosts = ({
                 </Dropdown.Toggle>
 
                 <Dropdown.Menu className={"customDrop"}>
-                  <Button className="text-start w-100" variant="light">
+                  <Button
+                    className="text-start w-100"
+                    variant="light"
+                    onClick={() => handleEdit(postId)}>
                     Edit
                   </Button>
                   <Button

@@ -12,60 +12,137 @@ import { toast } from "react-toastify";
 function PostModal(props) {
   const [simpleSpinner, setSimpleSpinner] = useState(false);
   const [image, setImage] = useState("");
-
+  console.log(props);
   const handleSignUp = () => {
     // props.setModalShowReg(true);
     props.onHide();
   };
-  const handleLogin = async (e) => {
+  const handlePost = async (e) => {
     setSimpleSpinner(true);
     e.preventDefault();
     const category = e.target.category.value;
     const title = e.target.title.value;
     const description = e.target.description.value;
-
-    const url = `https://api.imgbb.com/1/upload?key=2c53c27424338bf017f58a186ffe899d`;
-    fetch(url, {
-      method: "POST",
-      body: image,
-    })
-      .then((res) => res.json())
-      .then((result) => {
-        if (result.status === 200) {
-          const imgUrl = result.data.url;
-          fetch(`http://localhost:5000/user-post`, {
-            method: "POST",
-            headers: {
-              "content-type": "application/json",
-              authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-            },
-            body: JSON.stringify({
-              category,
-              title,
-              description,
-              imgUrl,
-            }),
-          })
-            .then((res) => res.json())
-            .then((data) => {
-              setSimpleSpinner(false);
-              props.onHide();
-              if (data.status === 200) {
-                toast.success("you have post", {
-                  toastId: "success",
-                });
-              } else {
-                toast.error("there was an error", {
-                  toastId: "error",
-                });
-              }
+    if (props.id && image) {
+      const url = `https://api.imgbb.com/1/upload?key=2c53c27424338bf017f58a186ffe899d`;
+      fetch(url, {
+        method: "POST",
+        body: image,
+      })
+        .then((res) => res.json())
+        .then((result) => {
+          if (result.status === 200) {
+            const imgUrl = result.data.url;
+            fetch(`http://localhost:5000/user-post`, {
+              method: "POST",
+              headers: {
+                "content-type": "application/json",
+                authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+              },
+              body: JSON.stringify({
+                category,
+                title,
+                description,
+                imgUrl,
+                id: props.id,
+              }),
+            })
+              .then((res) => res.json())
+              .then((data) => {
+                props.setReFetch(true);
+                setSimpleSpinner(false);
+                props.onHide();
+                if (data.status === 200) {
+                  toast.success("you have post", {
+                    toastId: "success",
+                  });
+                } else {
+                  toast.error("there was an error", {
+                    toastId: "error",
+                  });
+                }
+              });
+          } else {
+            toast.error("there was an error", {
+              toastId: "error",
             });
-        } else {
-          toast.error("there was an error", {
-            toastId: "error",
-          });
-        }
-      });
+          }
+        });
+    } else if (props.id) {
+      console.log("post is");
+      fetch(`http://localhost:5000/user-post`, {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+          authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+        body: JSON.stringify({
+          category,
+          title,
+          description,
+          id: props.id,
+        }),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          setSimpleSpinner(false);
+          props.setReFetch(true);
+          props.onHide();
+          if (data.status === 200) {
+            toast.success("you have post", {
+              toastId: "success",
+            });
+          } else {
+            toast.error("there was an error", {
+              toastId: "error",
+            });
+          }
+        });
+    } else {
+      const url = `https://api.imgbb.com/1/upload?key=2c53c27424338bf017f58a186ffe899d`;
+      fetch(url, {
+        method: "POST",
+        body: image,
+      })
+        .then((res) => res.json())
+        .then((result) => {
+          if (result.status === 200) {
+            const imgUrl = result.data.url;
+            fetch(`http://localhost:5000/user-post`, {
+              method: "POST",
+              headers: {
+                "content-type": "application/json",
+                authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+              },
+              body: JSON.stringify({
+                category,
+                title,
+                description,
+                imgUrl,
+              }),
+            })
+              .then((res) => res.json())
+              .then((data) => {
+               props.setReFetch(true);
+                setSimpleSpinner(false);
+                props.onHide();
+                if (data.status === 200) {
+                  toast.success("you have post", {
+                    toastId: "success",
+                  });
+                } else {
+                  toast.error("there was an error", {
+                    toastId: "error",
+                  });
+                }
+              });
+          } else {
+            toast.error("there was an error", {
+              toastId: "error",
+            });
+          }
+        });
+    }
   };
 
   const handleFile = (e) => {
@@ -106,7 +183,7 @@ function PostModal(props) {
             </Row>
             <Row className="mb-3">
               <Col xs={12} md={6}>
-                <Form onSubmit={handleLogin}>
+                <Form onSubmit={handlePost}>
                   <Form.Group className="mb-3" controlId="image">
                     <Form.Control
                       onChange={handleFile}

@@ -52,6 +52,7 @@ async function run() {
     console.log("connected");
   });
   const userCollection = client.db("ATG_DB").collection("users");
+  const postCollection = client.db("ATG_DB").collection("posts");
   // user get or login
   app.post("/login", async (req, res) => {
     try {
@@ -101,10 +102,9 @@ async function run() {
   app.post("/forget-password", async (req, res) => {
     try {
       const { userName, email, newPassword } = req.body;
-      console.log(newPassword);
       const filter = { userName };
       const result = await userCollection.findOne(filter);
-      console.log(result);
+    //   console.log(result);
       if (result.email === email && result.userName === userName) {
         const passHashing = await bcrypt.hash(newPassword, 10);
         await userCollection.updateOne(filter, {
@@ -119,5 +119,71 @@ async function run() {
       console.log("registration error" + error);
     }
   });
+
+
+  // user post api
+  app.post("/user-post", async (req, res) => {
+    try {
+      const { category, title, description, imgUrl } = req.body;
+      const result = await postCollection.insertOne({category, title, description, imgUrl});
+      if (result.acknowledged) {
+        res.send({ response: "success", status: 200 });
+      } else {
+        res.send({ response: "internal error", status: 500 });
+      } 
+    } catch (error) {
+      res.send({ response: "internal error", status: 500 });
+      console.log("post error" + error);
+    }
+  });
+
+  // user get api
+  app.get("/user-post", async (req, res) => {
+    try {
+      
+      const result = await postCollection.find({}).toArray()
+      res.send({ result, status: 200 });
+     
+    } catch (error) {
+      res.send({ response: "internal error", status: 500 });
+      console.log("post error" + error);
+    }
+  });
+
+
+  // user get api
+  app.delete("/user-post/:id", async (req, res) => {
+    try {
+      const {id} = req.params;
+      const result = await postCollection.deleteOne({_id:ObjectId(id)})
+      console.log(result);
+      res.send({ result, status: 200 });
+     
+    } catch (error) {
+      res.send({ response: "internal error", status: 500 });
+      console.log("post error" + error);
+    }
+  });
+  // user get api
+  app.delete("/user-post/:id", async (req, res) => {
+    try {
+      const {id} = req.params;
+      const result = await postCollection.deleteOne({_id:ObjectId(id)})
+      console.log(result);
+      res.send({ result, status: 200 });
+     
+    } catch (error) {
+      res.send({ response: "internal error", status: 500 });
+      console.log("post error" + error);
+    }
+  });
+
+
+
+
+
+
+
+
 }
 run().catch(console.dir);
